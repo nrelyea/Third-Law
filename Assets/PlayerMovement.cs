@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -49,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     public void OnLand()
     {
         //Debug.Log("LANDED (Y Velocity = " + m_Rigidbody2D.velocity.y + ")");
-        if(m_Rigidbody2D.velocity.y == 0) animator.SetBool("IsJumping", true);
+        if((m_Rigidbody2D.velocity.y > 13.4 && m_Rigidbody2D.velocity.y < 13.42) || m_Rigidbody2D.velocity.y == 0) animator.SetBool("IsJumping", true);
         else animator.SetBool("IsJumping", false);
     }
 

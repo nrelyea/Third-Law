@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController2D controller;
+    public Animator animator;
 
     public float runSpeed = 40f;
 
@@ -13,12 +15,12 @@ public class PlayerMovement : MonoBehaviour
     private bool jump = false;
     private bool crouch = false;
 
-
+    private Rigidbody2D m_Rigidbody2D;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -26,9 +28,12 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
+            animator.SetBool("IsJumping", true);
         }
 
         if (Input.GetButtonDown("Crouch"))
@@ -39,6 +44,13 @@ public class PlayerMovement : MonoBehaviour
         {
             crouch = false;
         }
+    }
+
+    public void OnLand()
+    {
+        //Debug.Log("LANDED (Y Velocity = " + m_Rigidbody2D.velocity.y + ")");
+        if(m_Rigidbody2D.velocity.y == 0) animator.SetBool("IsJumping", true);
+        else animator.SetBool("IsJumping", false);
     }
 
     // called once every fixed amount of time (better for physics and movement)

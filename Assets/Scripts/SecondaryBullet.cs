@@ -25,7 +25,15 @@ public class SecondaryBullet : MonoBehaviour
     {
         if (hitInfo.name != "Player" && hitInfo.name != "PrimaryBullet(Clone)" && hitInfo.name != "SecondaryBullet(Clone)")
         {
-            Debug.Log("Secondary Hit " + hitInfo.name);
+            //Debug.Log("Secondary Hit " + hitInfo.name);
+
+            IO_Collision io = hitInfo.GetComponent<IO_Collision>();
+            if (io != null)
+            {
+                Debug.Log("Secondary Hit interaction object!");
+                io.ToggleFrozen();
+            }
+
             Destroy(gameObject);
         }
     }

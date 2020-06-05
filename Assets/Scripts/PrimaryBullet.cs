@@ -23,9 +23,16 @@ public class PrimaryBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if(hitInfo.name != "Player" && hitInfo.name != "PrimaryBullet(Clone)" && hitInfo.name != "SecondaryBullet(Clone)")
+        if (hitInfo.name != "Player" && hitInfo.name != "PrimaryBullet(Clone)" && hitInfo.name != "SecondaryBullet(Clone)")
         {
-            Debug.Log("Primary Hit " + hitInfo.name);
+            //Debug.Log("Primary Hit " + hitInfo.name);
+
+            IO_Collision io = hitInfo.GetComponent<IO_Collision>();
+            if(io != null)
+            {
+                Debug.Log("Primary Hit interaction object!");
+            }
+
             Destroy(gameObject);
         }
     }

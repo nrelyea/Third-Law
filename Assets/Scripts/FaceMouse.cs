@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,6 +39,12 @@ public class FaceMouse : MonoBehaviour
 
         float currentRelativeX = mousePosition.x - transform.position.x;
         float currentRelativeY = mousePosition.y - transform.position.y;
+
+        // HANDLING BUG: If x < 0 and y ~= 0, it flips incorrectly. This should handle that bug
+        if (currentRelativeX < 0 && Math.Abs((double)currentRelativeY) < 0.01)
+        {
+            currentRelativeY += 0.01f;
+        }
 
         Vector2 direction = new Vector2(currentRelativeX, currentRelativeY);
 

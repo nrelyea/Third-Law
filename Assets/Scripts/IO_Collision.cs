@@ -50,10 +50,11 @@ public class IO_Collision : MonoBehaviour
 
     }
 
+    // toggle whether object is frozen and make necessary changes to alter the state fully
+    // called by SecondaryBullet upon collision with IO
     public void ToggleFrozen()
     {
         Frozen = !Frozen;
-
 
         if (Frozen)                                 
         {
@@ -90,6 +91,7 @@ public class IO_Collision : MonoBehaviour
         }
     }
 
+    // update indicator arrow to reflect current / changes to store velocity
     public void UpdateIndicator()
     {
         SpriteRenderer indicatorSR = velocityIndicator.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
@@ -105,9 +107,7 @@ public class IO_Collision : MonoBehaviour
                 velocityIndicator.localScale = new Vector3(0.5f, magnitude / 10, 1.0f);
 
                 indicatorSR.enabled = true;
-            }
-
-            
+            }          
         }
         else
         {
@@ -115,6 +115,7 @@ public class IO_Collision : MonoBehaviour
         }
     }
 
+    // Calculate angle of indicator angle
     public float IndicatorAngle(Vector2 vel)
     {
         float x = vel.x;
@@ -127,15 +128,13 @@ public class IO_Collision : MonoBehaviour
             else return 420.0f;                     // if object isn't moving, return special number to be interpreted as "no movement"
         }
 
-        //Debug.Log("velocity:  x: " + x + "  y: " + y);
-
         double angle = Math.Atan2(y, x) * (180 / Math.PI) - 90;
-
-        //Debug.Log("angle: " + angle);
 
         return (float)angle;
     }
 
+    // apply force to this object to either alter its velocity immediately or alter the stored value while frozen
+    // called by PrimaryBullet upon collision with IO
     public void ApplyForce(Vector2 incomingVelocity)
     {
         float xModifier = incomingVelocity.x / rb.mass / MassVelocityModifier;
@@ -147,16 +146,11 @@ public class IO_Collision : MonoBehaviour
 
             float magnitude = Magnitude(StoredLinearVelocity);
 
-            if (magnitude > MaximumVelocity)
+            if (magnitude > MaximumVelocity)       // If maximum magnitude of velocity has been exceeded, adjust velocity proportionally
             {
-                Debug.Log("Max velocity exceeded!");
-
                 float StoredToMaxRatio = magnitude / MaximumVelocity;
                 Vector2 adjustedVelocity = new Vector2(StoredLinearVelocity.x / StoredToMaxRatio, StoredLinearVelocity.y / StoredToMaxRatio);
                 StoredLinearVelocity = adjustedVelocity;
-
-                Debug.Log("New magnitude: " + Magnitude(StoredLinearVelocity));
-
             }
 
             UpdateIndicator();
@@ -167,6 +161,7 @@ public class IO_Collision : MonoBehaviour
         }
     }
 
+    // calculate the overall magnitude of a 2d velocity
     public float Magnitude(Vector2 v)
     {
         double velX = Convert.ToDouble(v.x);

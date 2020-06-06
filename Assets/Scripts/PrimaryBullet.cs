@@ -25,12 +25,12 @@ public class PrimaryBullet : MonoBehaviour
     {
         if (hitInfo.name != "Player" && hitInfo.name != "PrimaryBullet(Clone)" && hitInfo.name != "SecondaryBullet(Clone)")
         {
-            //Debug.Log("Primary Hit " + hitInfo.name);
 
             IO_Collision io = hitInfo.GetComponent<IO_Collision>();
             if(io != null)
             {
-                Debug.Log("Primary Hit interaction object!");
+                //Debug.Log("Primary Hit interaction object!");
+                io.ApplyForce(rb.velocity);
             }
 
             Destroy(gameObject);

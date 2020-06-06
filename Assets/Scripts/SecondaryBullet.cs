@@ -30,7 +30,7 @@ public class SecondaryBullet : MonoBehaviour
             IO_Collision io = hitInfo.GetComponent<IO_Collision>();
             if (io != null)
             {
-                Debug.Log("Secondary Hit interaction object!");
+                //Debug.Log("Secondary Hit interaction object!");
                 io.ToggleFrozen();
             }
 

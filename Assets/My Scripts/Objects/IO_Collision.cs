@@ -22,6 +22,9 @@ public class IO_Collision : MonoBehaviour
 
     public float MaximumVelocity;
 
+    //public bool Rideable;
+    //private HashSet<string> ConnectedObjects;
+
 
     // Start is called before the first frame update
     void Start()
@@ -42,13 +45,8 @@ public class IO_Collision : MonoBehaviour
         StoredAngularVelocity = 0.0f;
 
         velocityIndicator = this.gameObject.transform.GetChild(0);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-
+        //ConnectedObjects = new HashSet<string> { };
     }
 
     // toggle whether object is frozen and make necessary changes to alter the state fully
@@ -104,7 +102,7 @@ public class IO_Collision : MonoBehaviour
             {
                 velocityIndicator.eulerAngles = new Vector3(0.0f, 0.0f, angle);
 
-                float magnitude = Magnitude(StoredLinearVelocity);
+                float magnitude = StoredLinearVelocity.magnitude;
                 velocityIndicator.localScale = new Vector3(0.5f, magnitude / 10, 1.0f);
 
                 indicatorSR.enabled = true;
@@ -145,7 +143,7 @@ public class IO_Collision : MonoBehaviour
         {
             StoredLinearVelocity = new Vector2(StoredLinearVelocity.x + xModifier, StoredLinearVelocity.y + yModifier);
 
-            float magnitude = Magnitude(StoredLinearVelocity);
+            float magnitude = StoredLinearVelocity.magnitude;
 
             if (magnitude > MaximumVelocity)       // If maximum magnitude of velocity has been exceeded, adjust velocity proportionally
             {
@@ -162,12 +160,79 @@ public class IO_Collision : MonoBehaviour
         }
     }
 
-    // calculate the overall magnitude of a 2d velocity
-    public float Magnitude(Vector2 v)
-    {
-        double velX = Convert.ToDouble(v.x);
-        double velY = Convert.ToDouble(v.y);
+    //////////////////////////////////////////////////////////////////////////////////
+    // BELOW IS FAILED ATTEMPT AT RIDEABLE OBJECT IMPLEMENTATION, WILL COME BACK TO //
+    //////////////////////////////////////////////////////////////////////////////////
 
-        return (float)Math.Sqrt(Math.Pow(velX, 2) + Math.Pow(velY, 2));
+
+    //private void OnCollisionEnter2D(Collision2D collisionInfo)
+    //{
+    //    if (Rideable)
+    //    {
+    //        string colliderName = collisionInfo.gameObject.name;
+    //        IO_Collision io = collisionInfo.gameObject.GetComponent<IO_Collision>();
+    //        if(colliderName == "Player" || io != null)
+    //        {
+    //            if (!IsBullet(collisionInfo))
+    //            {
+    //                Debug.Log("Mounting " + colliderName + " on " + gameObject.name);
+
+    //                //var middleManObj = new GameObject();
+    //                //middleManObj.name = collisionInfo.gameObject.name + " Helper";
+    //                //collisionInfo.collider.transform.SetParent(middleManObj.transform);
+    //                //middleManObj.transform.SetParent(transform);
+
+    //                ConnectedObjects.Add(colliderName);
+    //            }
+    //        }           
+    //    }
+    //}
+
+    //private void OnCollisionStay2D(Collision2D collisionInfo)
+    //{
+    //    if (Rideable)
+    //    {
+    //        if (!IsBullet(collisionInfo) && ConnectedObjects.Contains(collisionInfo.gameObject.name))
+    //        {
+    //            //Debug.Log("Updating " + collisionInfo.gameObject.name + " in respect to " + gameObject.name);
+
+    //            //Rigidbody2D riderRB = collisionInfo.gameObject.GetComponent<Rigidbody2D>();
+    //            //Debug.Log("Object mass: " + rb.mass + "  Rider mass: " + riderRB.mass);
+    //            //Debug.Log("Velocity of " + riderRB.velocity.x + ", " + riderRB.velocity.y + " being set to " + rb.velocity.x + ", " + riderRB.velocity.y);
+    //            //riderRB.velocity = new Vector2(rb.velocity.x, riderRB.velocity.y);
+    //            //riderRB.velocity = new Vector2(rb.velocity.x + xModifier, rb.velocity.y + yModifier);
+    //        }
+    //    }
+    //}
+
+    //private void OnCollisionExit2D(Collision2D collisionInfo)
+    //{
+    //    if (Rideable)
+    //    {
+    //        string colliderName = collisionInfo.gameObject.name;
+    //        IO_Collision io = collisionInfo.gameObject.GetComponent<IO_Collision>();
+    //        if (colliderName == "Player" || io != null)
+    //        {
+    //            if (!IsBullet(collisionInfo))
+    //            {
+    //                if (collisionInfo.gameObject.transform.parent != null)
+    //                {
+    //                    Debug.Log("Disconnecting " + colliderName + " from " + gameObject.name);
+
+    //                    ConnectedObjects.Remove(colliderName);
+
+    //                    //var middleManObj = collisionInfo.collider.transform.parent.gameObject;
+    //                    //middleManObj.transform.SetParent(null);
+    //                    //collisionInfo.collider.transform.SetParent(null);
+    //                    //Destroy(middleManObj);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+
+    private bool IsBullet(Collision2D col)
+    {
+        return (col.gameObject.name == "PrimaryBullet(Clone)" || col.gameObject.name == "SecondaryBullet(Clone)");
     }
 }

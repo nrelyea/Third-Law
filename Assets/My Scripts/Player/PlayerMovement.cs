@@ -52,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
         else animator.SetBool("IsJumping", false);
     }
 
+    public void ForceLand()
+    {
+        animator.SetBool("IsJumping", false);
+    }
+
     // called once every fixed amount of time (better for physics and movement)
     void FixedUpdate()
     {

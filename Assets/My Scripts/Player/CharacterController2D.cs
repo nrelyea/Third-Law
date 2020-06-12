@@ -58,13 +58,17 @@ public class CharacterController2D : MonoBehaviour
 			{
                 m_Grounded = true;
 
+                //Debug.Log("WasGrounded: " + wasGrounded + "    Grounded: " + m_Grounded);
+
                 if (!wasGrounded && FirstMoveHasBeenMade)
                 {                                     
                     OnLandEvent.Invoke();
                 }
             }
 		}
-	}
+
+        //Debug.Log("WasGrounded: " + wasGrounded + "    Grounded: " + m_Grounded);
+    }
 
 
 	public void Move(float move, bool crouch, bool jump)
@@ -142,10 +146,24 @@ public class CharacterController2D : MonoBehaviour
         // If the player should jump...
         if (m_Grounded && jump)
 		{
-			// Add a vertical force to the player.
-			m_Grounded = false;
-			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
-		}
+            m_Grounded = false;
+
+            // Add a vertical force to the player.
+
+            float preJumpVelocity = m_Rigidbody2D.velocity.y;
+
+            if(m_Rigidbody2D.velocity.y < 0)
+            {
+                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);                
+            }
+            else if (m_Rigidbody2D.velocity.y > 0)
+            {
+                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y / 5);
+            }
+
+            m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+
+        }
 	}
 
 

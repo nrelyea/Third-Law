@@ -12,5 +12,9 @@ public class Pause : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+        if (Input.GetButtonDown("Restart"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);            
+        }
     }
 }

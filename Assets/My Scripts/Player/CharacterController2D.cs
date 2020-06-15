@@ -31,6 +31,8 @@ public class CharacterController2D : MonoBehaviour
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
+    public Animator animator;
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -58,16 +60,15 @@ public class CharacterController2D : MonoBehaviour
 			{
                 m_Grounded = true;
 
-                //Debug.Log("WasGrounded: " + wasGrounded + "    Grounded: " + m_Grounded);
-
-                if (!wasGrounded && FirstMoveHasBeenMade)
-                {                                     
-                    OnLandEvent.Invoke();
-                }
+                //if (!wasGrounded && FirstMoveHasBeenMade)
+                //{                                     
+                //    OnLandEvent.Invoke();
+                //}
             }
 		}
 
-        //Debug.Log("WasGrounded: " + wasGrounded + "    Grounded: " + m_Grounded);
+        // set value of "IsAirborne" to the opposit of m_Grounded
+        animator.SetBool("IsAirborne", !m_Grounded);
     }
 
 

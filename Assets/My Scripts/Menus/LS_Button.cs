@@ -12,7 +12,7 @@ public class LS_Button : MonoBehaviour
     void Start()
     {
         int mostRecentLevelUnlocked = PlayerPrefs.GetInt("mostRecentLevelUnlocked");
-        if (LevelSelect.FirstLevelBuildIndex - 1 + LevelNumber > mostRecentLevelUnlocked)
+        if (GlobalVars.FirstLevelBuildIndex - 1 + LevelNumber > mostRecentLevelUnlocked)
         {
             GetComponent<Button>().interactable = false;
         }
@@ -26,6 +26,6 @@ public class LS_Button : MonoBehaviour
 
     public void HandleClick()
     {
-        SceneManager.LoadScene(LevelSelect.FirstLevelBuildIndex - 1 + LevelNumber);
+        SceneManager.LoadScene(GlobalVars.FirstLevelBuildIndex - 1 + LevelNumber);
     }
 }

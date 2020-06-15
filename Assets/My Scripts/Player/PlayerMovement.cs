@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
-            animator.SetBool("IsJumping", true);
+            //animator.SetBool("IsJumping", true);
         }
 
         if (Input.GetButtonDown("Crouch"))
@@ -48,13 +48,8 @@ public class PlayerMovement : MonoBehaviour
     public void OnLand()
     {
         //Debug.Log("LANDED (Y Velocity = " + m_Rigidbody2D.velocity.y + ")");
-        if((m_Rigidbody2D.velocity.y > 13.4 && m_Rigidbody2D.velocity.y < 13.42) || m_Rigidbody2D.velocity.y == 0) animator.SetBool("IsJumping", true);
-        else animator.SetBool("IsJumping", false);
-    }
-
-    public void ForceLand()
-    {
-        animator.SetBool("IsJumping", false);
+        //if((m_Rigidbody2D.velocity.y > 13.4 && m_Rigidbody2D.velocity.y < 13.42) || m_Rigidbody2D.velocity.y == 0) animator.SetBool("IsJumping", true);
+        //else animator.SetBool("IsJumping", false);
     }
 
     // called once every fixed amount of time (better for physics and movement)

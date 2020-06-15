@@ -6,16 +6,11 @@ using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
-    ///////////////////////////////////////////////////////////////////////////
-    // CHANGE THIS WHENEVER NEW LEVELS ARE ADDED TO BUILD BEFORE PLAY LEVELS //
-    public static int FirstLevelBuildIndex = 1;
-    ///////////////////////////////////////////////////////////////////////////
-
     void Start()
     {
         if (!PlayerPrefs.HasKey("mostRecentLevelUnlocked"))
         {
-            PlayerPrefs.SetInt("mostRecentLevelUnlocked", FirstLevelBuildIndex);
+            PlayerPrefs.SetInt("mostRecentLevelUnlocked", GlobalVars.FirstLevelBuildIndex);
             PlayerPrefs.Save();
         }
     }

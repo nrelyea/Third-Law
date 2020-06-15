@@ -116,8 +116,11 @@ public class LevelButton : MonoBehaviour
 
             try
             {
-                Door doorScript = GameObject.Find(TargetName).GetComponent<Door>();
-                doorScript.RecieveSignal(signal);
+                //DoorOld doorScript = GameObject.Find(TargetName).GetComponent<DoorOld>();
+                //doorScript.RecieveSignal(signal);
+
+                DoorNew newDoorScript = GameObject.Find(TargetName).GetComponent<DoorNew>();
+                newDoorScript.RecieveSignal(signal);
             }
             catch (Exception e)
             {

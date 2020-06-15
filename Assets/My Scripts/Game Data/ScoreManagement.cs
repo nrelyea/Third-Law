@@ -19,9 +19,12 @@ public class ScoreManagement : MonoBehaviour
     // saves time and returns true if time being saved is new PB
     public bool SaveTime(int levelNumber, float time)
     {
+        //Debug.Log("Level: " + levelNumber + "  time: " + time);
         float currentPB = PlayerPrefs.GetFloat("Level" + levelNumber + "PB");
+        Debug.Log("current level " + levelNumber + " PB: " + currentPB);
         if (time < currentPB || currentPB == 0)
         {
+            //Debug.Log("Saving time for Level: " + levelNumber + "  time: " + time);
             PlayerPrefs.SetFloat("Level" + levelNumber + "PB", time);
             PlayerPrefs.SetString("Level" + levelNumber + "PB_Formatted", FormatTime(time));
             return true;

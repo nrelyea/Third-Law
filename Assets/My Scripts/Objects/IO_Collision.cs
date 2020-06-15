@@ -22,6 +22,9 @@ public class IO_Collision : MonoBehaviour
 
     public float MaximumVelocity;
 
+    private Vector2 InitialPosition;
+    private Quaternion InitialRotation;
+
     //public bool Rideable;
     //private HashSet<string> ConnectedObjects;
 
@@ -45,6 +48,9 @@ public class IO_Collision : MonoBehaviour
         StoredAngularVelocity = 0.0f;
 
         velocityIndicator = this.gameObject.transform.GetChild(0);
+
+        InitialPosition = gameObject.transform.position;
+        InitialRotation = gameObject.transform.rotation;
 
         //ConnectedObjects = new HashSet<string> { };
     }
@@ -230,6 +236,9 @@ public class IO_Collision : MonoBehaviour
     //        }
     //    }
     //}
+
+    public Vector2 GetInitialPosition() { return InitialPosition; }
+    public Quaternion GetInitialRotation() { return InitialRotation; }
 
     private bool IsBullet(Collision2D col)
     {

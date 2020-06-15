@@ -17,11 +17,16 @@ public class CameraZoom : MonoBehaviour
     public float MinZoom;
     public float MaxZoom;
 
+    private bool ManualZoomAllowed;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        vcam.m_Lens.OrthographicSize = DefaultZoom;
         TargetZoom = DefaultZoom;
+
+        ManualZoomAllowed = true;
     }
 
     // Update is called once per frame
@@ -29,17 +34,22 @@ public class CameraZoom : MonoBehaviour
     {
         float size = vcam.m_Lens.OrthographicSize;
 
-        var d = Input.GetAxis("Mouse ScrollWheel");
-        if (d > 0f && TargetZoom > MinZoom)
+        //Debug.Log(OtherInputs.PlayerInputAllowed);
+
+        if (ManualZoomAllowed)
         {
-            TargetZoom--;            
-            
-            //Debug.Log("Zooming IN to " + TargetZoom);
-        }
-        else if (d < 0f && TargetZoom < MaxZoom)
-        {
-            TargetZoom++;
-            //Debug.Log("Zooming OUT to " + TargetZoom);
+            var d = Input.GetAxis("Mouse ScrollWheel");
+            if (d > 0f && TargetZoom > MinZoom)
+            {
+                TargetZoom--;
+
+                //Debug.Log("Zooming IN to " + TargetZoom);
+            }
+            else if (d < 0f && TargetZoom < MaxZoom)
+            {
+                TargetZoom++;
+                //Debug.Log("Zooming OUT to " + TargetZoom);
+            }
         }
 
         if (Math.Abs(size - TargetZoom) > 0.05f)    // if actual zoom size and target zoom size are different
@@ -57,5 +67,11 @@ public class CameraZoom : MonoBehaviour
             composer.m_DeadZoneWidth = 0.1f + ((TargetZoom - DefaultZoom) / 150);
             composer.m_DeadZoneHeight = 0.05f + ((TargetZoom - DefaultZoom) / 150);
         }
+    }
+
+    public void ForceZoom(int zoom)
+    {
+        ManualZoomAllowed = false;
+        TargetZoom = zoom;
     }
 }

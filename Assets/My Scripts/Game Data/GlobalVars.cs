@@ -9,5 +9,7 @@ public class GlobalVars : MonoBehaviour
     public static int FirstLevelBuildIndex = 1;
     ///////////////////////////////////////////////////////////////////////////
 
+    // controls if level should fade in on when level loading
+    public static bool FadeInOnLoad = true;
     
 }

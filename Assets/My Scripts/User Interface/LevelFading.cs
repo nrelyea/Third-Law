@@ -8,20 +8,20 @@ public class LevelFading : MonoBehaviour
     public Animator animator;
     private int TargetLevelNumber;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    FadeToLevel(2);
-        //}
-
+        // Set animator to follow the global FadeInOnLoad's instruction
+        animator.enabled = GlobalVars.FadeInOnLoad;
+        // Reset FadeInOnLoad to true 
+        GlobalVars.FadeInOnLoad = true;
     }
 
     public void FadeToLevel(int targetLevel)
     {
         TargetLevelNumber = targetLevel;
-        animator.SetTrigger("FadeOut");
+
+        animator.enabled = true;
+        animator.SetTrigger("FadeOut");        
     }
 
     public void OnFadeComplete()

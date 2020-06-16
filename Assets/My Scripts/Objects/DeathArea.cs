@@ -10,11 +10,15 @@ public class DeathArea : MonoBehaviour
     private bool HoleShrinking;
     private bool HoleShrinkComplete;
 
+    private float FinalHoleScale;
+
     // Start is called before the first frame update
     void Start()
     {
         Hole = GameObject.Find("DeathHole");
         HoleShrinking = false;
+
+        FinalHoleScale = 2;
     }
 
     void FixedUpdate()
@@ -22,7 +26,7 @@ public class DeathArea : MonoBehaviour
         // control shrinking of death hole effect
         if (HoleShrinking)
         {
-            if (Hole.transform.localScale.x > 1)
+            if (Hole.transform.localScale.x > FinalHoleScale)
             {
                 Hole.transform.localScale = Vector3.Scale(Hole.transform.localScale, new Vector3(0.97f, 0.97f, 0.97f));
                 HoleShrinkComplete = true;

@@ -20,9 +20,18 @@ public class ScoreManagement : MonoBehaviour
     public bool SaveTime(int levelNumber, float time)
     {
         //Debug.Log("Level: " + levelNumber + "  time: " + time);
-        float currentPB = PlayerPrefs.GetFloat("Level" + levelNumber + "PB");
-        Debug.Log("current level " + levelNumber + " PB: " + currentPB);
-        if (time < currentPB || currentPB == 0)
+        string key = "Level" + levelNumber + "PB";
+        float currentPB;
+        if (PlayerPrefs.HasKey(key))
+        {
+            currentPB = PlayerPrefs.GetFloat(key);
+        }
+        else
+        {
+            currentPB = 999999;
+        }
+        //Debug.Log("current level " + levelNumber + " PB: " + currentPB);
+        if (time < currentPB)
         {
             //Debug.Log("Saving time for Level: " + levelNumber + "  time: " + time);
             PlayerPrefs.SetFloat("Level" + levelNumber + "PB", time);

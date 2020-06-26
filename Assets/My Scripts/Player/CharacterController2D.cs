@@ -56,8 +56,10 @@ public class CharacterController2D : MonoBehaviour
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
 		for (int i = 0; i < colliders.Length; i++)
 		{
-			if (colliders[i].gameObject != gameObject)
+			if (colliders[i].gameObject != gameObject && !NameBeginsWith("Enemy", colliders[i].gameObject.name))
 			{
+                //Debug.Log("grounded by " + colliders[i].gameObject.name);
+
                 m_Grounded = true;
 
                 //if (!wasGrounded && FirstMoveHasBeenMade)
@@ -71,8 +73,20 @@ public class CharacterController2D : MonoBehaviour
         animator.SetBool("IsAirborne", !m_Grounded);
     }
 
+    private bool NameBeginsWith(string start, string name)
+    {
+        for (int i = 0; i < start.Length; i++)
+        {
+            if (start[i] != name[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	public void Move(float move, bool crouch, bool jump)
+
+    public void Move(float move, bool crouch, bool jump)
 	{
         // BUG FIX: If no move has been made up until this point but the incoming move will create movement, update FirstMoveHasBeenMade
         //          This fixes a bug in the logic to determine if the player has jumped and displaying the appropriate animation
@@ -80,19 +94,22 @@ public class CharacterController2D : MonoBehaviour
         if (!FirstMoveHasBeenMade && jump) FirstMoveHasBeenMade = true;
 
 
-        // If crouching, check to see if the character can stand up
-        if (!crouch)
-		{
-			// If the character has a ceiling preventing them from standing up, keep them crouching
-			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
-			{
-				crouch = true;
-			}
-		}
+        // Just disabled below code because it causes issues with current setup, and currently no plan to implement physical crouching yet
+
+        //// If crouching, check to see if the character can stand up
+        //if (!crouch)
+		//{
+		//	// If the character has a ceiling preventing them from standing up, keep them crouching
+		//	if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+		//	{
+        //      crouch = true;
+		//	}
+		//}
 
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
 		{
+            //Debug.Log("grounded: " + m_Grounded + "  jumping: " + jump);
 
 			// If crouching
 			if (crouch)

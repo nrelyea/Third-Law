@@ -15,17 +15,10 @@ public class PrimaryBullet : MonoBehaviour
         rb.velocity = transform.right * cs.PrimaryBulletSpeed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if (hitInfo.name != "Player" && hitInfo.name != "PrimaryBullet(Clone)" && hitInfo.name != "SecondaryBullet(Clone)")
+        if (hitInfo.name != "Player" && hitInfo.name != "PrimaryBullet(Clone)" && hitInfo.name != "SecondaryBullet(Clone)" && !NameBeginsWith("Enemy", hitInfo.name))
         {
-
             IO_Collision io = hitInfo.GetComponent<IO_Collision>();
             if(io != null)
             {
@@ -35,5 +28,17 @@ public class PrimaryBullet : MonoBehaviour
 
             Destroy(gameObject);
         }
+    }
+
+    private bool NameBeginsWith(string start, string name)
+    {
+        for(int i = 0; i < start.Length; i++)
+        {
+            if(start[i] != name[i])
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

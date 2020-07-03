@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     public float TimeToChargeShot;
     private float TimeSincePlayerDetected;
 
-
     private bool BeamsVisible = false;
 
     public Material LineMaterial;
@@ -198,6 +197,10 @@ public class Enemy : MonoBehaviour
         {
 
             Debug.Log("Hit the player!");
+
+            // Call for player to be killed with animation type '1'\
+            GameObject playerObj = GameObject.Find("Player");
+            playerObj.GetComponent<PlayerStatus>().KillPlayer(1);
 
         }
     }

@@ -32,6 +32,9 @@ public class CameraZoom : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ignore all zoom handling if game is paused
+        if (GlobalVars.GameIsPaused) return;
+
         float size = vcam.m_Lens.OrthographicSize;
 
         //Debug.Log(OtherInputs.PlayerInputAllowed);

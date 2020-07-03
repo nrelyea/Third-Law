@@ -13,6 +13,9 @@ public class PlayerFaceCorrectDirection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ignore all animation flipping if game is paused
+        if (GlobalVars.GameIsPaused) return;
+
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 

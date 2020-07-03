@@ -25,21 +25,39 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        // ignore all input handling if game is paused
+        if (GlobalVars.GameIsPaused) return;
+        
+        //  The original left / right movement data was encapsulated into this one line, which also has benefit of future controller support
+        //  I have to remove for now to substitute in manual checks for right and left in order to maintain controls changing support
+        //horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+
+        if (Input.GetKey(GlobalVars.MoveRightKey) && !Input.GetKey(GlobalVars.MoveLeftKey)) // if input is only right, move right
+        {
+            horizontalMove = runSpeed;
+        }
+        else if (Input.GetKey(GlobalVars.MoveLeftKey) && !Input.GetKey(GlobalVars.MoveRightKey)) // if input is only left, move left
+        {
+            horizontalMove = runSpeed * -1f;
+        }
+        else // otherwise, if input is neither or both, don't move
+        {
+            horizontalMove = 0;
+        }
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(GlobalVars.JumpKey))
         {
             jump = true;
             //animator.SetBool("IsJumping", true);
         }
 
-        if (Input.GetButtonDown("Crouch"))
+        if (Input.GetKey(GlobalVars.WalkKey))
         {
             crouch = true;
         }
-        else if (Input.GetButtonUp("Crouch"))
+        else if (Input.GetKeyUp(GlobalVars.WalkKey))
         {
             crouch = false;
         }
@@ -58,4 +76,6 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
         jump = false;
     }
+
+    
 }

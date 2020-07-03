@@ -27,6 +27,9 @@ public class FaceMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ignore all gun movement handling if game is paused
+        if (GlobalVars.GameIsPaused) return;
+
         faceMouse();
     }
 

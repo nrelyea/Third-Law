@@ -27,12 +27,15 @@ public class WeaponFiring : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1") && UpdatesBeforeReadyToFire == 0)
+        // ignore all gun firing if game is paused
+        if (GlobalVars.GameIsPaused) return;
+
+        if (Input.GetKey(GlobalVars.PrimaryFireKey) && UpdatesBeforeReadyToFire == 0)
         {
             ShootPrimary();
             UpdatesBeforeReadyToFire = FramesBetweenFiring;
         }
-        else if (Input.GetButtonDown("Fire2") && UpdatesBeforeReadyToFire == 0)
+        else if (Input.GetKeyDown(GlobalVars.SecondaryFireKey) && UpdatesBeforeReadyToFire == 0)
         {
             ShootSecondary();
             UpdatesBeforeReadyToFire = FramesBetweenFiring;

@@ -10,8 +10,9 @@ public class LS_Button : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         int mostRecentLevelUnlocked = PlayerPrefs.GetInt("mostRecentLevelUnlocked");
+        //Debug.Log("most recent level unlocked: " + mostRecentLevelUnlocked);
         if (GlobalVars.FirstLevelBuildIndex - 1 + LevelNumber > mostRecentLevelUnlocked)
         {
             GetComponent<Button>().interactable = false;
@@ -26,6 +27,7 @@ public class LS_Button : MonoBehaviour
 
     public void HandleClick()
     {
+        //Debug.Log("Button " + LevelNumber + " loading scene at index: " + (GlobalVars.FirstLevelBuildIndex - 1 + LevelNumber));
         SceneManager.LoadScene(GlobalVars.FirstLevelBuildIndex - 1 + LevelNumber);
     }
 }

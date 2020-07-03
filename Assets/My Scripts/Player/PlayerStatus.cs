@@ -17,6 +17,10 @@ public class PlayerStatus : MonoBehaviour
     private bool HoleShrinkComplete;
     private float FinalHoleScale;
 
+    private float DeathHoleYOffset = 1.0f;
+
+    private GameObject PlayerObj;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +29,8 @@ public class PlayerStatus : MonoBehaviour
         Hole = GameObject.Find("DeathHole");
         HoleShrinking = false;
         FinalHoleScale = 2; // the final resting size of the whole on player before fading to black
+
+        PlayerObj = GameObject.Find("Player");
     }
 
     void FixedUpdate()
@@ -44,25 +50,30 @@ public class PlayerStatus : MonoBehaviour
                 LevelFading fadeScript = image.gameObject.GetComponent<LevelFading>();
                 fadeScript.FadeToLevel(SceneManager.GetActiveScene().buildIndex);
             }
+            Vector3 playerPos = PlayerObj.transform.position;
+            Hole.transform.position = new Vector3(playerPos.x, playerPos.y + DeathHoleYOffset, 0);
         }
     }
 
-    public void KillPlayer(int animation)
+    public void KillPlayer(int deathType)
     {
         // force zoom target to be certain number
         CameraZoom zoomScript = GameObject.Find("Zoom").GetComponent<CameraZoom>();
         zoomScript.ForceZoom(ForcedZoom);
 
         // generate effect of circular spotlight focusing on where player died
-        BeginDeathHoleEffect(gameObject.transform.position, 1);
+        BeginDeathHoleEffect(gameObject.transform.position, DeathHoleYOffset);
 
-        // stop player from moving
-        Rigidbody2D playerRB = gameObject.GetComponent<Rigidbody2D>();
-        playerRB.bodyType = RigidbodyType2D.Static;
+        // stop player from moving if death type is 0
+        if(deathType == 0)
+        {
+            Rigidbody2D playerRB = gameObject.GetComponent<Rigidbody2D>();
+            playerRB.bodyType = RigidbodyType2D.Static;
+        }
 
         // disable movement inputs script to disable any input driven animation changes
-        PlayerMovement movementScript = gameObject.GetComponent<PlayerMovement>();
-        movementScript.enabled = false;
+        CharacterController2D controlScript = gameObject.GetComponent<CharacterController2D>();
+        controlScript.DisableMovement();
 
         // disable mouse aiming from affecting the direction player is looking / flipping
         PlayerFaceCorrectDirection faceScript = gameObject.GetComponent<PlayerFaceCorrectDirection>();
@@ -75,7 +86,7 @@ public class PlayerStatus : MonoBehaviour
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // MAKE PLAYER DYING ANIMATION / EFFECTS HERE (different animation / effects based on 'animation' parameter) //
+        // MAKE PLAYER DYING ANIMATION / EFFECTS HERE (different animation / effects based on 'deathType' parameter) //
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

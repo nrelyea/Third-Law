@@ -20,7 +20,11 @@ public class CharacterController2D : MonoBehaviour
 	private Vector3 m_Velocity = Vector3.zero;
     private bool FirstMoveHasBeenMade;
 
-	[Header("Events")]
+    private bool MovementEnabled = true;
+
+    private float PrevFrameVelocityY = 0;   // stores the player's y velocity from the previous frame / fixed update
+
+    [Header("Events")]
 	[Space]
 
 	public UnityEvent OnLandEvent;
@@ -58,19 +62,30 @@ public class CharacterController2D : MonoBehaviour
 		{
 			if (colliders[i].gameObject != gameObject && !NameBeginsWith("Enemy", colliders[i].gameObject.name))
 			{
-                //Debug.Log("grounded by " + colliders[i].gameObject.name);
+                //Debug.Log("grounded by " + colliders[i].gameObject.name + "  (prev frame velocity: " + PrevFrameVelocityY + ")");
 
                 m_Grounded = true;
 
-                //if (!wasGrounded && FirstMoveHasBeenMade)
-                //{                                     
-                //    OnLandEvent.Invoke();
-                //}
+                // A decent way to detect if hitting the ground (still testing)
+                if (!wasGrounded && m_Grounded && PrevFrameVelocityY < 0)
+                {
+                    //Debug.Log("Hit Ground!");
+                    //OnLandEvent.Invoke();
+
+                    // BUG Fix: addresses bug where grounded state / animations flicker when landing on objects (player bouncing off them weirdly)
+                    // This still might cause future bugs and should be monitored carefully
+                    m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
+                }               
             }
-		}
+        }
 
         // set value of "IsAirborne" to the opposit of m_Grounded
         animator.SetBool("IsAirborne", !m_Grounded);
+
+        // update the previous frame y velocity variable to store that of this frame for future calculations
+        PrevFrameVelocityY = m_Rigidbody2D.velocity.y;
+
+
     }
 
     private bool NameBeginsWith(string start, string name)
@@ -93,18 +108,24 @@ public class CharacterController2D : MonoBehaviour
         //if (!FirstMoveHasBeenMade && (move > 0.0f || move < 0.0f || jump)) FirstMoveHasBeenMade = true;
         if (!FirstMoveHasBeenMade && jump) FirstMoveHasBeenMade = true;
 
+        if (!MovementEnabled)
+        {
+            move = 0;
+            crouch = false;
+            jump = false;
+        }
 
         // Just disabled below code because it causes issues with current setup, and currently no plan to implement physical crouching yet
 
         //// If crouching, check to see if the character can stand up
         //if (!crouch)
-		//{
-		//	// If the character has a ceiling preventing them from standing up, keep them crouching
-		//	if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
-		//	{
+        //{
+        //	// If the character has a ceiling preventing them from standing up, keep them crouching
+        //	if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+        //	{
         //      crouch = true;
-		//	}
-		//}
+        //	}
+        //}
 
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
@@ -195,4 +216,9 @@ public class CharacterController2D : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+    public void DisableMovement()
+    {
+        MovementEnabled = false;
+    }
 }

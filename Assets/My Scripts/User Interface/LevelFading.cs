@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelFading : MonoBehaviour
 {
     public Animator animator;
-    private int TargetLevelNumber;
+    private int TargetLevelBuildIndex;
 
     void Start()
     {
@@ -16,9 +16,9 @@ public class LevelFading : MonoBehaviour
         GlobalVars.FadeInOnLoad = true;
     }
 
-    public void FadeToLevel(int targetLevel)
+    public void FadeToLevel(int targetLevelindex)
     {
-        TargetLevelNumber = targetLevel;
+        TargetLevelBuildIndex = targetLevelindex;
 
         animator.enabled = true;
         animator.SetTrigger("FadeOut");        
@@ -26,6 +26,6 @@ public class LevelFading : MonoBehaviour
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(GlobalVars.FirstLevelBuildIndex - 1 + TargetLevelNumber);
+        SceneManager.LoadScene(TargetLevelBuildIndex);
     }
 }

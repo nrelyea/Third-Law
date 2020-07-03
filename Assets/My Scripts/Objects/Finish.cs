@@ -45,18 +45,20 @@ public class Finish : MonoBehaviour
             catch
             {
                 Debug.Log("ERROR: Finish not passed proper TimeManager object needed to report time to complete level");
-            }            
+            }
 
-            if (TargetLevelNumber > PlayerPrefs.GetInt("mostRecentLevelUnlocked"))
+            int TargetIndex = GlobalVars.FirstLevelBuildIndex - 1 + TargetLevelNumber;
+            //Debug.Log("Target index: " + TargetIndex + "  (" + GlobalVars.FirstLevelBuildIndex + " - 1 + " + TargetLevelNumber + ")");
+            if (TargetIndex > PlayerPrefs.GetInt("mostRecentLevelUnlocked"))
             {
-                PlayerPrefs.SetInt("mostRecentLevelUnlocked", TargetLevelNumber);
+                PlayerPrefs.SetInt("mostRecentLevelUnlocked", TargetIndex);
                 PlayerPrefs.Save();
             }
 
             // Fade and Load to next level using the LevelFading script
             Transform image = GameObject.Find("UI Canvas").transform.Find("FadeImage");
             LevelFading fadeScript = image.gameObject.GetComponent<LevelFading>();
-            fadeScript.FadeToLevel(TargetLevelNumber);
+            fadeScript.FadeToLevel(TargetIndex);
         }
     }
 
